@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = TtaTermsApi::VERSION
   spec.authors       = ["Shim Tw"]
   spec.email         = ["marocchino@gmail.com"]
-  spec.summary       = %q{Ruby interface to 정보 통신 용어 사전(telecommunication word terms)}
+  spec.summary       = %q{Ruby interface to Korean IT terms(정보 통신 용어 사전)}
   spec.description   = ""
   spec.homepage      = ""
   spec.license       = "MIT"
