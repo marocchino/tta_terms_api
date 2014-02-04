@@ -7,10 +7,10 @@ module TtaTermsApi
   BASE_URL = "http://word.tta.or.kr/terms/"
   WordCritria = Struct.new(:name, :options) do
     def to_word
-      TtaTermsApi.view(@options)
+      TtaTermsApi.view(options)
     end
   end
-  Word = Struct.new(:name, :origin, :type, :description)
+  Word = Struct.new(:name, :origin, :type, :similar, :description)
 
   def self.list(options)
     html = html(:list, options)
@@ -35,8 +35,8 @@ module TtaTermsApi
   end
 
   def self.view(options)
-    name, origin, type, _, description = html(:view, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
-    Word.new name, origin, type, description
+    name, origin, type, similar, description = html(:view, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
+    Word.new name, origin, type, similar, description
   end
 
   def self.html(type, options)
@@ -44,3 +44,4 @@ module TtaTermsApi
     Nokogiri::HTML(open(uri), nil, "EUC-KR")
   end
 end
+
