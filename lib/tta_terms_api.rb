@@ -5,7 +5,7 @@ require 'open-uri'
 
 module TtaTermsApi
   BASE_URL = "http://word.tta.or.kr/terms/"
-  WordCritria = Struct.new(:name, :options) do
+  WordCriteria = Struct.new(:name, :options) do
     def to_word
       TtaTermsApi.view(options)
     end
@@ -20,7 +20,7 @@ module TtaTermsApi
       name = tr.children.first.text.gsub("\n","")
       script = tr.css(".input_size0").attr("onkeydown").value
       script.match(/sendData\(\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'([^']*)'\s*\)/)
-      WordCritria.new name,
+      WordCriteria.new name,
         gubun: $1,
         terms_num: $2,
         title: $3,

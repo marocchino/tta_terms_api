@@ -6,7 +6,7 @@ describe TtaTermsApi do
     let(:list) { TtaTermsApi.list(search: "list") }
     it "return array of word object" do
       expect(list.class).to be Array
-      expect(list.first.class).to be TtaTermsApi::WordCritria
+      expect(list.first.class).to be TtaTermsApi::WordCriteria
     end
   end
 
