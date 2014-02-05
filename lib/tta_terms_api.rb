@@ -1,10 +1,12 @@
 require "tta_terms_api/version"
 require "nokogiri"
 require 'open-uri'
+require 'moneta'
 
 
 module TtaTermsApi
   BASE_URL = "http://word.tta.or.kr/terms/"
+  STORE = Moneta.new(:File, :dir => 'tmp')
   WordCriteria = Struct.new(:name, :options) do
     def to_word
       TtaTermsApi.view(options)
@@ -41,7 +43,8 @@ module TtaTermsApi
 
   def self.html(type, options)
     uri = "#{BASE_URL}terms#{type.to_s.capitalize}.jsp?#{options.map{|k,v|"#{k}=#{v}"} * "&"}"
-    Nokogiri::HTML(open(uri), nil, "EUC-KR")
+    html = STORE.fetch(uri) { STORE[uri] = open(uri).read }
+    Nokogiri::HTML(html, nil, "EUC-KR")
   end
 end
 

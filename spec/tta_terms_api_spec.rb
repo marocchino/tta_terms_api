@@ -11,9 +11,18 @@ describe TtaTermsApi do
   end
 
   describe ".view" do
-    let(:view) { TtaTermsApi.view(gubun: 1, terms_num: 17625) }
+    let(:view) { TtaTermsApi.view(gubun: 1, terms_num: 17626) }
     it "return array of word object" do
       expect(view.class).to be TtaTermsApi::Word
+    end
+  end
+
+  describe ".html" do
+    let(:html) { TtaTermsApi.html("", {}) }
+    it "cache html object" do
+      expect(html).to_not be_nil
+      expect(TtaTermsApi::STORE["http://word.tta.or.kr/terms/terms.jsp?"]).to_not be_nil
+      TtaTermsApi::STORE.delete("http://word.tta.or.kr/terms/terms.jsp?")
     end
   end
 end
