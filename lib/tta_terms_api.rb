@@ -15,7 +15,8 @@ module TtaTermsApi
   Word = Struct.new(:name, :origin, :type, :similar, :description)
 
   def self.list(options)
-    html = html(:list, options)
+    key = "list-#{options[:search]}"
+    html = html(:list, key, options)
     trs = html.css("#tableWidth tr")
     trs.pop
     trs.map do |tr|
@@ -37,13 +38,14 @@ module TtaTermsApi
   end
 
   def self.view(options)
-    name, origin, type, similar, description = html(:view, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
+    key = "view-#{options[:gubun]}-#{options[:terms_num]}"
+    name, origin, type, similar, description = html(:view, key, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
     Word.new name, origin, type, similar, description
   end
 
-  def self.html(type, options)
+  def self.html(type, key, options)
     uri = "#{BASE_URL}terms#{type.to_s.capitalize}.jsp?#{options.map{|k,v|"#{k}=#{v}"} * "&"}"
-    html = STORE.fetch(uri) { STORE[uri] = open(uri).read }
+    html = STORE.fetch(key){ STORE[key] = open(uri).read }
     Nokogiri::HTML(html, nil, "EUC-KR")
   end
 end
