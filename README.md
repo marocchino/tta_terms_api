@@ -1,4 +1,5 @@
 # TtaTermsApi
+[![Build Status](https://travis-ci.org/marocchino/tta_terms_api.png?branch=master)](https://travis-ci.org/marocchino/tta_terms_api)
 
 Ruby interface to [Korean IT terms(정보 통신 용어 사전)](http://word.tta.or.kr/terms/terms.jsp)
 
