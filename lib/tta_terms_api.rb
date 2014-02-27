@@ -11,32 +11,32 @@ module TtaTermsApi
   STORE = Moneta.new(:File, :dir => 'tmp')
 
   def self.list(options)
+    pattern = %r{sendData\(\s*
+      '(?<gubun>.*)',\s*
+      '(?<terms_num>.*)',\s*
+      '(?<title>.*)',\s*
+      '(?<title_gubun>.*)',\s*
+      '(?<gubun2>.*)',\s*
+      '(?<terms_num2>.*)',\s*
+      '(?<title2>.*)',\s*
+      '(?<title2_gubun>.*)',\s*
+      '(?<gabora_gubun>.*)',\s*
+      '(?<popular>[^']*)'\s*\)
+    }x
     key = "list-#{options[:search]}"
     html = html(:list, key, options)
     trs = html.css("#tableWidth tr")
     trs.pop
     trs.map do |tr|
-      name = tr.children.first.text.gsub("\n","")
       script = tr.css(".input_size0").attr("onkeydown").value
-      script.match(/sendData\(\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'(.*)',\s*'([^']*)'\s*\)/)
-      WordCriteria.new name,
-        gubun: $1,
-        terms_num: $2,
-        title: $3,
-        title_gubun: $4,
-        gubun2: $5,
-        terms_num2: $6,
-        title2: $7,
-        title2_gubun: $8,
-        gabora_gubun: $9,
-        popular: $10
+      match_options = pattern.match(script)
+      options = Hash[ match_options.names.zip( match_options.captures ) ]
+      WordCriteria.new options
     end
   end
 
   def self.view(options)
-    key = "view-#{options[:gubun]}-#{options[:terms_num]}"
-    name, origin, type, similar, description = html(:view, key, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
-    Word.new name, origin, type, similar, description
+    WordCriteria.new(options).to_word
   end
 
   def self.html(type, key, options)
