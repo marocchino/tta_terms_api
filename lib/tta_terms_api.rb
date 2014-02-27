@@ -1,4 +1,6 @@
 require "tta_terms_api/version"
+require "tta_terms_api/word_criteria"
+require "tta_terms_api/word"
 require "nokogiri"
 require 'open-uri'
 require 'moneta'
@@ -7,12 +9,6 @@ require 'moneta'
 module TtaTermsApi
   BASE_URL = "http://word.tta.or.kr/terms/"
   STORE = Moneta.new(:File, :dir => 'tmp')
-  WordCriteria = Struct.new(:name, :options) do
-    def to_word
-      TtaTermsApi.view(options)
-    end
-  end
-  Word = Struct.new(:name, :origin, :type, :similar, :description)
 
   def self.list(options)
     key = "list-#{options[:search]}"
