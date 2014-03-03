@@ -27,7 +27,7 @@ To start using the gem, you can either perform direct calls on `TtaTermsApi`
 
 ``` ruby
 words_criteria = TtaTermsApi.list search: "commit"
-# => [#<struct TtaTermsApi::WordCriteria name="완료", options={:gubun=>"4", :terms_num=>"4-290", :title=>"%BF%CF%B7%E1%7Ccommit%7C", :title_gubun=>"kor", :gubun2=>"", :terms_num2=>"", :title2=>"", :title2_gubun=>"", :gabora_gubun=>"", :popular=>"false"}>, #<struct TtaTermsApi::WordCriteria name="커미트", options={:gubun=>"1", :terms_num=>"17625", :title=>"%C4%BF%B9%CC%C6%AE%7Ccommit%7C", :title_gubun=>"kor", :gubun2=>"", :terms_num2=>"", :title2=>"", :title2_gubun=>"", :gabora_gubun=>"", :popular=>"false"}>]
+# => [#<struct TtaTermsApi::WordCriteria options={:gubun=>"4", :terms_num=>"4-290", :title=>"%BF%CF%B7%E1%7Ccommit%7C", :title_gubun=>"kor", :gubun2=>"", :terms_num2=>"", :title2=>"", :title2_gubun=>"", :gabora_gubun=>"", :popular=>"false"}>, #<struct TtaTermsApi::WordCriteria options={:gubun=>"1", :terms_num=>"17625", :title=>"%C4%BF%B9%CC%C6%AE%7Ccommit%7C", :title_gubun=>"kor", :gubun2=>"", :terms_num2=>"", :title2=>"", :title2_gubun=>"", :gabora_gubun=>"", :popular=>"false"}>]
 
 words_criteria.first.to_word
 # => #<struct TtaTermsApi::Word name="commit", origin="완료", type="", similar="북한말 : 결속", description=nil>
