@@ -8,7 +8,6 @@ require 'moneta'
 
 module TtaTermsApi
   BASE_URL = "http://word.tta.or.kr/terms/"
-  STORE = Moneta.new(:File, :dir => 'tmp')
 
   def self.list(options)
     pattern = %r{sendData\(\s*
@@ -41,8 +40,12 @@ module TtaTermsApi
 
   def self.html(type, key, options)
     uri = "#{BASE_URL}terms#{type.to_s.capitalize}.jsp?#{options.map{|k,v|"#{k}=#{v}"} * "&"}"
-    html = STORE.fetch(key){ STORE[key] = open(uri).read }
+    html = store.fetch(key){ store[key] = open(uri).read }
     Nokogiri::HTML(html, nil, "EUC-KR")
+  end
+
+  def self.store
+    @store ||= Moneta.new(:File, :dir => 'tmp')
   end
 end
 

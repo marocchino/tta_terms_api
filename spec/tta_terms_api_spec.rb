@@ -27,10 +27,11 @@ describe TtaTermsApi do
 
   describe ".html" do
     let(:html) { TtaTermsApi.html("", "cache-test", {}) }
+    let(:store) { TtaTermsApi.store }
     it "cache html object" do
       expect(html).to_not be_nil
-      expect(TtaTermsApi::STORE["cache-test"]).to_not be_nil
-      TtaTermsApi::STORE.delete("cache-test")
+      expect(store["cache-test"]).to_not be_nil
+      store.delete("cache-test")
     end
   end
 end
