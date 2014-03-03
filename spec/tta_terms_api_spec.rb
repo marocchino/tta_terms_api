@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'tta_terms_api'
 describe TtaTermsApi do
-  subject(:tta_terms_api) { TtaTermsApi }
   describe ".list" do
     let(:list) { TtaTermsApi.list(search: "list") }
     it "return array of word object" do
@@ -24,14 +23,18 @@ describe TtaTermsApi do
       expect(view.class).to be TtaTermsApi::Word
     end
   end
+end
 
-  describe ".html" do
-    let(:html) { TtaTermsApi.html("", "cache-test", {}) }
-    let(:store) { TtaTermsApi.store }
-    it "cache html object" do
-      expect(html).to_not be_nil
-      expect(store["cache-test"]).to_not be_nil
-      store.delete("cache-test")
+module TtaTermsApi
+  describe HTML do
+    let(:store) { HTML.store }
+    describe ".get" do
+      it "cache html object" do
+        expect(HTML.get("", "cache-test", {})).to_not be_nil
+        expect(store["cache-test"]).to_not be_nil
+        store.delete("cache-test")
+        expect(store["cache-test"]).to be_nil
+      end
     end
   end
 end

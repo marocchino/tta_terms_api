@@ -1,13 +1,9 @@
 require "tta_terms_api/version"
 require "tta_terms_api/word_criteria"
 require "tta_terms_api/word"
-require "nokogiri"
-require 'open-uri'
-require 'moneta'
-
+require "tta_terms_api/html"
 
 module TtaTermsApi
-  BASE_URL = "http://word.tta.or.kr/terms/"
 
   def self.list(options)
     pattern = %r{sendData\(\s*
@@ -23,7 +19,7 @@ module TtaTermsApi
       '(?<popular>[^']*)'\s*\)
     }x
     key = "list-#{options[:search]}"
-    html = html(:list, key, options)
+    html = HTML.get(:list, key, options)
     trs = html.css("#tableWidth tr")
     trs.pop
     trs.map do |tr|
@@ -38,14 +34,5 @@ module TtaTermsApi
     WordCriteria.new(options).to_word
   end
 
-  def self.html(type, key, options)
-    uri = "#{BASE_URL}terms#{type.to_s.capitalize}.jsp?#{options.map{|k,v|"#{k}=#{v}"} * "&"}"
-    html = store.fetch(key){ store[key] = open(uri).read }
-    Nokogiri::HTML(html, nil, "EUC-KR")
-  end
-
-  def self.store
-    @store ||= Moneta.new(:File, :dir => 'tmp')
-  end
 end
 
