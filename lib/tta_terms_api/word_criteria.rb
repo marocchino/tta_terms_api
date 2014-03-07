@@ -25,6 +25,10 @@ module TtaTermsApi
       end
     end
 
+    def self.view(options)
+      new(options).to_word
+    end
+
     def to_word
       key = "view-#{options[:gubun]}-#{options[:terms_num]}"
       name, origin, type, similar, description = HTML.get(:view, key, options).css("#printSpace font").text.gsub("\t", "").split(/\n/)
